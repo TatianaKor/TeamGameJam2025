@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float GUM_FRICTION = 0.5f;
 	[SerializeField] private float jumpPower = 4;
 	[SerializeField] private LayerMask foothold;
+	[SerializeField] private float touchingDownCheckCircleRadius = 0.35f;
 
 	[Header("Movement")] [SerializeField] private float movementAcceleration = 2;
 	[SerializeField] private Rigidbody2D rb;
@@ -27,6 +28,8 @@ public class PlayerController : MonoBehaviour
 	
 	[Header("Misc")]
 	public Transform head;
+	[SerializeField] private Transform rightEyeTargetTransform;
+	[SerializeField] private Transform leftEyeTargetTransform;
 
 	private InputActionMap _inputActionMap;
 	private InputAction _move;
@@ -119,8 +122,10 @@ public class PlayerController : MonoBehaviour
 	public bool IsTouchingGround()
 	{
 		RaycastHit2D hit =
-			Physics2D.Raycast(transform.position, Vector2.down, JUMP_ALLOWANCE_VERTICAL_DISTANCE, foothold);
-		// Debug.DrawRay(transform.position, Vector2.down * JUMP_ALLOWANCE_VERTICAL_DISTANCE, Color.red, 10);
+			Physics2D.CircleCast(transform.position, touchingDownCheckCircleRadius, Vector2.down, JUMP_ALLOWANCE_VERTICAL_DISTANCE, foothold);
+		// Debug.DrawRay(transform.position, Vector2.down * (JUMP_ALLOWANCE_VERTICAL_DISTANCE + touchingDownCheckCircleRadius), Color.red, 10);
+		// Debug.DrawRay(transform.position + Vector3.right * touchingDownCheckCircleRadius, Vector2.down * JUMP_ALLOWANCE_VERTICAL_DISTANCE, Color.red, 10);
+		// Debug.DrawRay(transform.position - Vector3.right * touchingDownCheckCircleRadius, Vector2.down * JUMP_ALLOWANCE_VERTICAL_DISTANCE, Color.red, 10);
 		return hit.collider != null;
 	}
 
@@ -163,6 +168,9 @@ public class PlayerController : MonoBehaviour
 
 		_lastLook = input;
 		Vector2 worldPoint = cam.ScreenToWorldPoint(input);
+
+		rightEyeTargetTransform.position = worldPoint;
+		leftEyeTargetTransform.position = worldPoint;
 
 		gumCannon.rotation = Quaternion.Euler(0, 0,
 			Mathf.Atan2(worldPoint.y - gumCannon.position.y, worldPoint.x - gumCannon.position.x) * Mathf.Rad2Deg);

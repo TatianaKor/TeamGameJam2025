@@ -12,6 +12,11 @@ public class HorizontalSpit : MonoBehaviour
             return;
         }
 
+        if (other.transform.position.y > transform.position.y)
+        {
+            return;
+        }
+
         var descenderTopContactPoint = other.GetContact(0).point;
         var descender = Instantiate(descenderPrefab, descenderTopContactPoint + Vector2.down * 0.2f, Quaternion.identity);
         descender.player = other.gameObject.GetComponent<PlayerController>();
