@@ -27,9 +27,7 @@ public class FlyingGumSpit : MonoBehaviour
         }
         else if ((layer & verticalPlatformLayer.value) != 0)
         {
-            var flip = transform.position.x > collision.gameObject.transform.position.x;
-            Debug.Log(flip);
-            Attach(collision, verticalPlatformSpit, flip);
+            Attach(collision, verticalPlatformSpit, transform.position.x > collision.gameObject.transform.position.x);
         }
     }
 

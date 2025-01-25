@@ -10,7 +10,7 @@ public class BubbleGum : MonoBehaviour
     {
         _lifeTimer += Time.deltaTime;
 
-        if(_lifeTimer >= autoDestroyTime)
+        if (_lifeTimer >= autoDestroyTime)
         {
             Destroy(gameObject);
         }

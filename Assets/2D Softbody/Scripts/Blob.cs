@@ -5,33 +5,19 @@ public class Blob : MonoBehaviour
 {
     private class PropagateCollisions : MonoBehaviour
     {
-
-        GameObject zPlayer;
-        private void Start()
-        {
-            zPlayer = GameObject.FindGameObjectWithTag("PlayerMain");
-        }
-
         void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.transform.tag == "Sticky")
+            if (collision.transform.CompareTag("Sticky"))
             {
                 gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
-
             }
-
         }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.transform.tag == "DetachOne")
+            if (collision.transform.CompareTag("DetachOne"))
             {
                 gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-
-            }
-            if (collision.transform.tag == "DetachAll")
-            {
-                zPlayer.GetComponent<Blob>().TrigThis();
-
             }
         }
     }
@@ -58,10 +44,7 @@ public class Blob : MonoBehaviour
         CreateReferencePoints();
         CreateMesh();
         MapVerticesToReferencePoints();
-
     }
-
-
 
     void CreateReferencePoints()
     {
@@ -87,6 +70,7 @@ public class Blob : MonoBehaviour
             body.mass = 0.5f;
             body.interpolation = rigidbody.interpolation;
             body.collisionDetectionMode = rigidbody.collisionDetectionMode;
+            body.excludeLayers = rigidbody.excludeLayers;
             allReferencePoints[i] = body;
 
 
