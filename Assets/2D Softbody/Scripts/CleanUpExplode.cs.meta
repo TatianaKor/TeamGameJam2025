@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e1405d1c91b20d242a8cc555d90b6503
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 184042
+  packageName: 2D Round Softbody with Sticky
+  packageVersion: 1.0
+  assetPath: Assets/2D Softbody/Scripts/CleanUpExplode.cs
+  uploadId: 405194

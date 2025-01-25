@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 48b34deb264090248bb06bc828a49133
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 184042
+  packageName: 2D Round Softbody with Sticky
+  packageVersion: 1.0
+  assetPath: Assets/2D Softbody/Prefabs/Sticky (1).prefab
+  uploadId: 405194

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d08de303d8d6d7241918a4356af04c1e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 184042
+  packageName: 2D Round Softbody with Sticky
+  packageVersion: 1.0
+  assetPath: Assets/2D Softbody/Prefabs/Boom Maker Prefab.prefab
+  uploadId: 405194

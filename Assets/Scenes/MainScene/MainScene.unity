@@ -296,6 +296,7 @@ MonoBehaviour:
   rb: {fileID: 39682431}
   throwGumPower: 10
   gumPrefab: {fileID: 3195115407279262610, guid: 205ab4a405d6df94ba07a1ccfc108fa1, type: 3}
+  bubblePrefab: {fileID: 8475361199098567508, guid: bacb1e135f08d0e4382bbbb5990daee7, type: 3}
   gumCannon: {fileID: 2101003886}
   gumSpawnPoint: {fileID: 1211073081}
   cam: {fileID: 1885833190}

@@ -33,6 +33,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Throw Bubble",
+                    "type": "Button",
+                    "id": "2b470aac-3058-4780-975a-ac4f8d64219a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Jump",
                     "type": "Button",
                     "id": "c75627cb-8752-47cf-b8f2-ec2461ad728a",
@@ -141,6 +150,17 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "f784201d-f4b4-44f1-b0b4-9a3a71b4e14d",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Throw Bubble",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

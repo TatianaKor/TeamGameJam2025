@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 
 	[Header("Throw Gum")] [SerializeField] private float throwGumPower = 1.5f;
 	[SerializeField] private Rigidbody2D gumPrefab;
+	[SerializeField] private Rigidbody2D bubblePrefab;
 	[SerializeField] private Transform gumCannon;
 	[SerializeField] private Transform gumSpawnPoint;
 	[SerializeField] private Camera cam;
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour
 	private InputAction _move;
 	private InputAction _jump;
 	private InputAction _throwGum;
+	private InputAction _throwBubble;
 	private InputAction _look;
 
 	private Vector2 _lastLook;
@@ -39,6 +41,9 @@ public class PlayerController : MonoBehaviour
 
 		_throwGum = _inputActionMap.FindAction("Throw Gum");
 		_throwGum.performed += ThrowGum;
+
+		_throwBubble = _inputActionMap.FindAction("Throw Bubble");
+		_throwBubble.performed += ThrowBubble;
 
 		_look = _inputActionMap.FindAction("Look");
 	}
@@ -104,6 +109,19 @@ public class PlayerController : MonoBehaviour
 		--playerState.gumNumber;
 
 		var spit = Instantiate(gumPrefab, gumSpawnPoint.position, Quaternion.identity);
+		spit.AddForce(gumCannon.right * throwGumPower, ForceMode2D.Impulse);
+	}
+
+	private void ThrowBubble(InputAction.CallbackContext context)
+	{
+		if (playerState.gumNumber <= 0)
+		{
+			return;
+		}
+
+		--playerState.gumNumber;
+
+		var spit = Instantiate(bubblePrefab, gumSpawnPoint.position, Quaternion.identity);
 		spit.AddForce(gumCannon.right * throwGumPower, ForceMode2D.Impulse);
 	}
 

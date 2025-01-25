@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 67c476972551aa343b016b7651fc7edd
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 184042
+  packageName: 2D Round Softbody with Sticky
+  packageVersion: 1.0
+  assetPath: Assets/2D Softbody/Materials/Blob Material.mat
+  uploadId: 405194
