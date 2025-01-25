@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
 
 	[Header("State")]
 	public PlayerState playerState;
+	
+	[Header("Misc")]
+	public Transform head;
 
 	private InputActionMap _inputActionMap;
 	private InputAction _move;
@@ -74,6 +77,10 @@ public class PlayerController : MonoBehaviour
 
 	private void UpdateHorizontalMove()
 	{
+		if (rb.bodyType == RigidbodyType2D.Static)
+		{
+			return;
+		}
 		var input = _move.ReadValue<float>();
 		// rb.AddForceX(input * movementAcceleration * Time.deltaTime);
 		rb.linearVelocityX = input * movementAcceleration;
@@ -88,7 +95,7 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-	private bool IsTouchingGround()
+	public bool IsTouchingGround()
 	{
 		RaycastHit2D hit =
 			Physics2D.Raycast(transform.position, Vector2.down, JUMP_ALLOWANCE_VERTICAL_DISTANCE, foothold);
