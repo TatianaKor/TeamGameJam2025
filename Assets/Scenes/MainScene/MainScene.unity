@@ -289,6 +289,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   JUMP_ALLOWANCE_VERTICAL_DISTANCE: 0.75
   JUMP_ALLOWANCE_VERTICAL_VELOCITY: 0.1
+  WALL_JUMP_ALLOWANCE_VERTICAL_VELOCITY: 3
+  GUM_FRICTION: 0.3
   jumpPower: 7
   foothold:
     serializedVersion: 2

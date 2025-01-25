@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,6 +6,8 @@ public class PlayerController : MonoBehaviour
 {
 	[Header("Jump")] [SerializeField] private float JUMP_ALLOWANCE_VERTICAL_DISTANCE = 1.7f;
 	[SerializeField] private float JUMP_ALLOWANCE_VERTICAL_VELOCITY = 0.1f;
+	[SerializeField] private float WALL_JUMP_ALLOWANCE_VERTICAL_VELOCITY = 1f;
+	[SerializeField] private float GUM_FRICTION = 0.5f;
 	[SerializeField] private float jumpPower = 4;
 	[SerializeField] private LayerMask foothold;
 
@@ -33,6 +36,8 @@ public class PlayerController : MonoBehaviour
 	private InputAction _look;
 
 	private Vector2 _lastLook;
+
+	private HashSet<GameObject> _holdingWallGums = new HashSet<GameObject>();
 
 	void Awake()
 	{
@@ -70,6 +75,7 @@ public class PlayerController : MonoBehaviour
 	void Update()
 	{
 		UpdateHorizontalMove();
+		UpdateSpitFriction();
 		UpdateLook();
 	}
 
@@ -86,12 +92,27 @@ public class PlayerController : MonoBehaviour
 		rb.linearVelocityX = input * movementAcceleration;
 	}
 
+	private void UpdateSpitFriction()
+	{
+		if (_holdingWallGums.Count > 0)
+		{
+			rb.linearVelocityY *= GUM_FRICTION;
+		}
+	}
+
 
 	private void Jump(InputAction.CallbackContext context)
 	{
+		//Debug.Log("Vertical speed: " + Mathf.Abs(rb.linearVelocityY));
+
 		if (Mathf.Abs(rb.linearVelocityY) < JUMP_ALLOWANCE_VERTICAL_VELOCITY && IsTouchingGround())
 		{
 			rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+		}
+		else if (_holdingWallGums.Count > 0 && Mathf.Abs(rb.linearVelocityY) < WALL_JUMP_ALLOWANCE_VERTICAL_VELOCITY)
+		{
+			rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+			_holdingWallGums.Clear();
 		}
 	}
 
@@ -147,5 +168,25 @@ public class PlayerController : MonoBehaviour
 			Mathf.Atan2(worldPoint.y - gumCannon.position.y, worldPoint.x - gumCannon.position.x) * Mathf.Rad2Deg);
 	}
 
-	#endregion
+    #endregion
+
+    #region triggers
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if(collider.gameObject.tag.Equals("Sticky"))
+        {
+			_holdingWallGums.Add(collider.gameObject);
+		}
+    }
+
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+		if (collider.gameObject.tag.Equals("Sticky"))
+		{
+			_holdingWallGums.Remove(collider.gameObject);
+		}
+	}
+
+    #endregion
 }
