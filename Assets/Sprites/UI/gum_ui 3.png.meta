@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      gum_ui 3_0: -6101487415335571766
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -6,6 +6,8 @@ public class MainMenuController : MonoBehaviour
 {
     [SerializeField] private Button startButton;
     [SerializeField] private Button exitButton;
+    [SerializeField] private Toggle playMusicToggle;
+    [SerializeField] private Slider musicVolumeSlider;
     [SerializeField] private GameObject loadingPanel;
 
     private void Start()
@@ -14,6 +16,18 @@ public class MainMenuController : MonoBehaviour
 
         startButton.onClick.AddListener(StartGame);
         exitButton.onClick.AddListener(ExitGame);
+
+        playMusicToggle.isOn = GameManager.Instance.PlayMusic;
+        musicVolumeSlider.value = GameManager.Instance.MusicVolume;
+
+        playMusicToggle.onValueChanged.AddListener((value) =>
+        {
+            GameManager.Instance.PlayMusic = value;
+        });
+        musicVolumeSlider.onValueChanged.AddListener((value) =>
+        {
+            GameManager.Instance.MusicVolume = value;
+        });
     }
 
     private void StartGame()
