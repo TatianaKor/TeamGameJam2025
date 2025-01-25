@@ -111,8 +111,10 @@ public class PlayerController : MonoBehaviour
 		UpdateSpitFriction();
 		UpdateLook();
 
+		// TODO: WTF?! redo?
 		if (_lastVelocityY - rb.linearVelocityY <= DEATH_VELOCITY_Y)
         {
+	        Debug.Log(_lastVelocityY - rb.linearVelocityY);
 			//TODO: death animation
 			GameManager.Instance.RestartLevel();
 		}

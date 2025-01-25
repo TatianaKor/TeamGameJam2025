@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8119278836769191930
+--- !u!1 &656550327902004911
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8419332726532939854}
-  - component: {fileID: 4697131060343039656}
-  - component: {fileID: 7647043437076365306}
-  - component: {fileID: 1360069952957471649}
+  - component: {fileID: 613728844198323255}
+  - component: {fileID: 4603729637940774011}
+  - component: {fileID: 7238146452534027516}
   m_Layer: 0
-  m_Name: GumPickup
-  m_TagString: Pickable
+  m_Name: LimiterPlatform
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8419332726532939854
+--- !u!4 &613728844198323255
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8119278836769191930}
+  m_GameObject: {fileID: 656550327902004911}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.2736321, w: 0.96183443}
-  m_LocalPosition: {x: -12.186921, y: -3.3438277, z: 0}
-  m_LocalScale: {x: 0.15955165, y: 0.15955165, z: 0.15955165}
+  m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: -27.892862, y: 22.00749, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 31.761}
---- !u!212 &4697131060343039656
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!212 &4603729637940774011
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8119278836769191930}
+  m_GameObject: {fileID: 656550327902004911}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -78,37 +77,24 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 4829579946992321852, guid: 2e7e86382448031428b1a3617828b542, type: 3}
+  m_Sprite: {fileID: 9002072417497007392, guid: 443906bdea2034e4d8d192c84f64433d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_DrawMode: 2
+  m_Size: {x: 7.9, y: 0.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7647043437076365306
-MonoBehaviour:
+--- !u!61 &7238146452534027516
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8119278836769191930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36e17cc39c3c4579a8ebb9cd8a9ac2d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gumCount: 5
---- !u!58 &1360069952957471649
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8119278836769191930}
+  m_GameObject: {fileID: 656550327902004911}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
@@ -118,7 +104,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 0
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -132,9 +118,19 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 3.4400005
+  m_Offset: {x: -0.011663556, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.92, y: 0.2}
+    newSize: {x: 7.9, y: 0.2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 2
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 7.8571177, y: 0.2}
+  m_EdgeRadius: 0
