@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
 	[Header("Jump")] [SerializeField] private float JUMP_ALLOWANCE_VERTICAL_DISTANCE = 1.7f;
+	[SerializeField] private float DEATH_VELOCITY_Y = -10f;
 	[SerializeField] private float JUMP_ALLOWANCE_VERTICAL_VELOCITY = 0.1f;
 	[SerializeField] private float WALL_JUMP_ALLOWANCE_VERTICAL_VELOCITY = 1f;
 	[SerializeField] private float GUM_FRICTION = 0.5f;
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private Rigidbody2D rb;
 
 	[Header("Throw Gum")] [SerializeField] private float throwGumPower = 1.5f;
+	[SerializeField] private Transform spawnedObjectsRoot;
 	[SerializeField] private Rigidbody2D gumPrefab;
 	[SerializeField] private Rigidbody2D bubblePrefab;
 	[SerializeField] private Transform gumCannon;
@@ -35,12 +37,18 @@ public class PlayerController : MonoBehaviour
 	private InputAction _throwBubble;
 	private InputAction _look;
 
+	private Vector2 _spawnPosition;
 	private Vector2 _lastLook;
+	private float _lastVelocityY = 0;
+	private int _startGumCount;
 
 	private HashSet<GameObject> _holdingWallGums = new HashSet<GameObject>();
 
 	void Awake()
 	{
+		_spawnPosition = transform.position;
+		_startGumCount = playerState.gumCount;
+
 		_inputActionMap = InputSystem.actions.FindActionMap("Player");
 
 		_move = _inputActionMap.FindAction("Move");
@@ -77,6 +85,24 @@ public class PlayerController : MonoBehaviour
 		UpdateHorizontalMove();
 		UpdateSpitFriction();
 		UpdateLook();
+
+		if(_lastVelocityY - rb.linearVelocityY <= DEATH_VELOCITY_Y)
+        {
+			//TODO: death animation
+			GameManager.Instance.RestartLevel();
+		}
+		_lastVelocityY = rb.linearVelocityY;
+	}
+
+	public void Restart()
+    {
+		transform.position = _spawnPosition;
+		playerState.gumCount = _startGumCount;
+
+		foreach(Transform child in spawnedObjectsRoot)
+        {
+			Destroy(child.gameObject);
+        }
 	}
 
 	#region movement
@@ -137,7 +163,7 @@ public class PlayerController : MonoBehaviour
 
 		--playerState.gumCount;
 
-		var spit = Instantiate(gumPrefab, gumSpawnPoint.position, Quaternion.identity);
+		var spit = Instantiate(gumPrefab, gumSpawnPoint.position, Quaternion.identity, spawnedObjectsRoot);
 		spit.AddForce(gumCannon.right * throwGumPower, ForceMode2D.Impulse);
 	}
 
@@ -150,7 +176,7 @@ public class PlayerController : MonoBehaviour
 
 		--playerState.gumCount;
 
-		Instantiate(bubblePrefab, bubbleSpawnPoint.position, Quaternion.identity);
+		Instantiate(bubblePrefab, bubbleSpawnPoint.position, Quaternion.identity, spawnedObjectsRoot);
 	}
 
 	private void UpdateLook()

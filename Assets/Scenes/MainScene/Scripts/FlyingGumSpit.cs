@@ -34,7 +34,7 @@ public class FlyingGumSpit : MonoBehaviour
     private void Attach(Collision2D collision, GameObject prefab, bool flip = false)
     {
         var contactPoint = collision.GetContact(0).point;
-        Instantiate(prefab, contactPoint, flip ? Quaternion.Euler(0, 0, 180) : Quaternion.identity);
+        Instantiate(prefab, contactPoint, flip ? Quaternion.Euler(0, 0, 180) : Quaternion.identity, transform.parent);
         Destroy(gameObject);
     }
 

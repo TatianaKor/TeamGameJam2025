@@ -13,6 +13,6 @@ public class GumPickup : MonoBehaviour
 			return;
 		}
 		other.gameObject.GetComponent<PlayerController>().playerState.gumCount += gumCount;
-		Destroy(gameObject);
+		gameObject.SetActive(false);
 	}
 }

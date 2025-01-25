@@ -28,7 +28,8 @@ public class PausePanelController : MonoBehaviour
 
     private void RestartGame()
     {
-        //TODO
+        GameManager.Instance.RestartLevel();
+        ContinueGame();
     }
 
     private void ReturnToMainMenu()
