@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7970816189905313067}
   - component: {fileID: 6452700959084358262}
   m_Layer: 7
-  m_Name: FootholdGum
+  m_Name: BubbleGum
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141,7 +141,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 67c476972551aa343b016b7651fc7edd, type: 2}
+  - {fileID: 2100000, guid: 64982ddbee1f26a478a5eb8858171ae7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

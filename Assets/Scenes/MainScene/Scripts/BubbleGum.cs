@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FootholdGum : MonoBehaviour
+public class BubbleGum : MonoBehaviour
 {
     [SerializeField] private float autoDestroyTime = 10f;
 

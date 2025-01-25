@@ -122,7 +122,6 @@ public class PlayerController : MonoBehaviour
 		--playerState.gumNumber;
 
 		var spit = Instantiate(bubblePrefab, gumSpawnPoint.position, Quaternion.identity);
-		spit.AddForce(gumCannon.right * throwGumPower, ForceMode2D.Impulse);
 	}
 
 	private void UpdateLook()
