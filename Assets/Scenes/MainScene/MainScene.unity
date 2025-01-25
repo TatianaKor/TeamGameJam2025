@@ -257,6 +257,8 @@ MonoBehaviour:
   head: {fileID: 548755672}
   rightEyeTargetTransform: {fileID: 1282622409}
   leftEyeTargetTransform: {fileID: 46379420}
+  anim: {fileID: 1097832307}
+  spriteRoot: {fileID: 1097832302}
 --- !u!1 &46379419
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,7 +604,7 @@ Transform:
   m_GameObject: {fileID: 548755671}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.46, z: 0}
+  m_LocalPosition: {x: 0, y: -0.139, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1664,6 +1666,11 @@ Transform:
 --- !u!4 &1097832304 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2739222992662553120, guid: 1d8b6ae187048bd43a4c6c7e947d209d, type: 3}
+  m_PrefabInstance: {fileID: 1097832301}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1097832307 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6134796322730056222, guid: 1d8b6ae187048bd43a4c6c7e947d209d, type: 3}
   m_PrefabInstance: {fileID: 1097832301}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1115000384

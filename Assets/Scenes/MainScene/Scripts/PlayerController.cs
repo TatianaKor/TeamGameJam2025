@@ -1,9 +1,23 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
+	#region cached_variables
+	
+	private static readonly int IsGumDescendingAnimHash = Animator.StringToHash("IsGumDescending");
+	private static readonly int IsMovingHorizontallyAnimHash = Animator.StringToHash("IsMovingHorizontally");
+	private static readonly int JumpAnimHash = Animator.StringToHash("Jump");
+	private static readonly int IsOnWallGumAnimHash = Animator.StringToHash("IsOnWallGum");
+	private static readonly int FacingRightAnimHash = Animator.StringToHash("FacingRight");
+	private static readonly int TimeSinceJumpAnimHash = Animator.StringToHash("TimeSinceJump");
+	private static readonly int IsOnGroundAnimHash = Animator.StringToHash("IsOnGround");
+
+	#endregion
+	
 	[Header("Jump")] [SerializeField] private float JUMP_ALLOWANCE_VERTICAL_DISTANCE = 1.7f;
 	[SerializeField] private float DEATH_VELOCITY_Y = -10f;
 	[SerializeField] private float JUMP_ALLOWANCE_VERTICAL_VELOCITY = 0.1f;
@@ -32,6 +46,11 @@ public class PlayerController : MonoBehaviour
 	public Transform head;
 	[SerializeField] private Transform rightEyeTargetTransform;
 	[SerializeField] private Transform leftEyeTargetTransform;
+	[SerializeField] private Animator anim;
+	[SerializeField] private Transform spriteRoot;
+	[SerializeField] private float spriteScaleMultiplier = 0.35f;
+
+	public bool IsTouchingGround { get; private set; }
 
 	private InputActionMap _inputActionMap;
 	private InputAction _move;
@@ -44,8 +63,9 @@ public class PlayerController : MonoBehaviour
 	private Vector2 _lastLook;
 	private float _lastVelocityY = 0;
 	private int _startGumCount;
+	private float _timeSinceJump;
 
-	private HashSet<GameObject> _holdingWallGums = new HashSet<GameObject>();
+	private HashSet<GameObject> _holdingWallGums = new();
 
 	void Awake()
 	{
@@ -85,16 +105,24 @@ public class PlayerController : MonoBehaviour
 
 	void Update()
 	{
+		UpdateTimeSinceJump();
+		CheckIsTouchingGround();
 		UpdateHorizontalMove();
 		UpdateSpitFriction();
 		UpdateLook();
 
-		if(_lastVelocityY - rb.linearVelocityY <= DEATH_VELOCITY_Y)
+		if (_lastVelocityY - rb.linearVelocityY <= DEATH_VELOCITY_Y)
         {
 			//TODO: death animation
 			GameManager.Instance.RestartLevel();
 		}
 		_lastVelocityY = rb.linearVelocityY;
+	}
+
+	private void UpdateTimeSinceJump()
+	{
+		_timeSinceJump += Time.deltaTime;
+		anim.SetFloat(TimeSinceJumpAnimHash, _timeSinceJump);
 	}
 
 	public void Restart()
@@ -117,8 +145,23 @@ public class PlayerController : MonoBehaviour
 			return;
 		}
 		var input = _move.ReadValue<float>();
+		
 		// rb.AddForceX(input * movementAcceleration * Time.deltaTime);
 		rb.linearVelocityX = input * movementAcceleration;
+		
+		anim.SetBool(IsMovingHorizontallyAnimHash, input != 0);
+
+		switch (input)
+		{
+			case < 0:
+				anim.SetBool(FacingRightAnimHash, true);
+				spriteRoot.localScale = new Vector3(-spriteScaleMultiplier, spriteScaleMultiplier, spriteScaleMultiplier);
+				break;
+			case > 0:
+				anim.SetBool(FacingRightAnimHash, false);
+				spriteRoot.localScale = new Vector3(spriteScaleMultiplier, spriteScaleMultiplier, spriteScaleMultiplier);
+				break;
+		}
 	}
 
 	private void UpdateSpitFriction()
@@ -129,30 +172,34 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-
 	private void Jump(InputAction.CallbackContext context)
 	{
-		//Debug.Log("Vertical speed: " + Mathf.Abs(rb.linearVelocityY));
-
-		if (Mathf.Abs(rb.linearVelocityY) < JUMP_ALLOWANCE_VERTICAL_VELOCITY && IsTouchingGround())
+		if (Mathf.Abs(rb.linearVelocityY) < JUMP_ALLOWANCE_VERTICAL_VELOCITY && IsTouchingGround)
 		{
 			rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+			anim.SetTrigger(JumpAnimHash);
+			_timeSinceJump = 0;
 		}
 		else if (_holdingWallGums.Count > 0 && Mathf.Abs(rb.linearVelocityY) < WALL_JUMP_ALLOWANCE_VERTICAL_VELOCITY)
 		{
 			rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+			anim.SetTrigger(JumpAnimHash);
+			_timeSinceJump = 0;
+			
 			_holdingWallGums.Clear();
+			anim.SetBool(IsOnWallGumAnimHash, false);
 		}
 	}
 
-	public bool IsTouchingGround()
+	private void CheckIsTouchingGround()
 	{
 		RaycastHit2D hit =
 			Physics2D.CircleCast(transform.position, touchingDownCheckCircleRadius, Vector2.down, JUMP_ALLOWANCE_VERTICAL_DISTANCE, foothold);
 		// Debug.DrawRay(transform.position, Vector2.down * (JUMP_ALLOWANCE_VERTICAL_DISTANCE + touchingDownCheckCircleRadius), Color.red, 10);
 		// Debug.DrawRay(transform.position + Vector3.right * touchingDownCheckCircleRadius, Vector2.down * JUMP_ALLOWANCE_VERTICAL_DISTANCE, Color.red, 10);
 		// Debug.DrawRay(transform.position - Vector3.right * touchingDownCheckCircleRadius, Vector2.down * JUMP_ALLOWANCE_VERTICAL_DISTANCE, Color.red, 10);
-		return hit.collider != null;
+		IsTouchingGround = hit.collider != null;
+		anim.SetBool(IsOnGroundAnimHash, IsTouchingGround);
 	}
 
 	#endregion
@@ -204,21 +251,32 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    public void SetGumDescending(bool isOnGum)
+    {
+	    rb.bodyType = isOnGum ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
+	    anim.SetBool(IsGumDescendingAnimHash, isOnGum);
+    }
+
     #region triggers
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerEnter2D(Collider2D col)
     {
-        if(collider.gameObject.tag.Equals("Sticky"))
+        if (col.CompareTag("Sticky"))
         {
-			_holdingWallGums.Add(collider.gameObject);
+			_holdingWallGums.Add(col.gameObject);
+			anim.SetBool(IsOnWallGumAnimHash, true);
 		}
     }
 
-    private void OnTriggerExit2D(Collider2D collider)
+    private void OnTriggerExit2D(Collider2D col)
     {
-		if (collider.gameObject.tag.Equals("Sticky"))
+		if (col.CompareTag("Sticky"))
 		{
-			_holdingWallGums.Remove(collider.gameObject);
+			_holdingWallGums.Remove(col.gameObject);
+			if (_holdingWallGums.Count == 0)
+			{
+				anim.SetBool(IsOnWallGumAnimHash, false);
+			}
 		}
 	}
 

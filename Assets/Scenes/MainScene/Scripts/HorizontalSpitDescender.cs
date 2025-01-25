@@ -7,20 +7,17 @@ public class HorizontalSpitDescender : MonoBehaviour
 	[SerializeField] private float descendSpeed;
 	[SerializeField] private float verticalShift;
 
-	private Rigidbody2D _playerRb;
-	
 	public PlayerController player;
 	public Vector2 topContactPoint;
 
 	private void Start()
 	{
-		_playerRb = player.GetComponent<Rigidbody2D>();
-		_playerRb.bodyType = RigidbodyType2D.Static;
+		player.SetGumDescending(true);
 	}
 	
 	private void OnDestroy()
 	{
-		_playerRb.bodyType = RigidbodyType2D.Dynamic;
+		player.SetGumDescending(false);
 	}
 
 	void Update()
@@ -33,7 +30,7 @@ public class HorizontalSpitDescender : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (player.IsTouchingGround())
+		if (player.IsTouchingGround)
 		{
 			Destroy(gameObject);
 		}
