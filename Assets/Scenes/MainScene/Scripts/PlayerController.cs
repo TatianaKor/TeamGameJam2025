@@ -21,9 +21,6 @@ public class PlayerController : MonoBehaviour
 
 	#endregion
 	
-	[Header("Jump")] [SerializeField] private float JUMP_ALLOWANCE_VERTICAL_DISTANCE = 1.7f;
-    #endregion
-
     [Header("Jump")] [SerializeField] private float JUMP_ALLOWANCE_VERTICAL_DISTANCE = 1.7f;
 	[SerializeField] private float DEATH_VELOCITY_Y = -10f;
 	[SerializeField] private float JUMP_ALLOWANCE_VERTICAL_VELOCITY = 0.1f;
