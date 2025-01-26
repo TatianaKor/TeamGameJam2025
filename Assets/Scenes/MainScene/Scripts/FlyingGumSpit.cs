@@ -36,6 +36,7 @@ public class FlyingGumSpit : MonoBehaviour
         var contactPoint = collision.GetContact(0).point;
         Instantiate(prefab, contactPoint, flip ? Quaternion.Euler(0, 0, 180) : Quaternion.identity, transform.parent);
         Destroy(gameObject);
+        GameManager.Instance.spitSplashSound.Play();
     }
 
     void Update()

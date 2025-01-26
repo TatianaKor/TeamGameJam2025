@@ -15,6 +15,7 @@ public class BubbleGum : MonoBehaviour
         if (_lifeTimer >= autoDestroyTime)
         {
             Destroy(gameObject);
+            GameManager.Instance.bubblePopSound.Play();
         }
     }
 }

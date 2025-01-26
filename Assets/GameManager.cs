@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public AudioSource landingSound;
     public AudioSource pickupSound;
     public AudioSource spitSound;
+    public AudioSource spitSplashSound;
+    public AudioSource bubblePopSound;
     
     private PlayerController player;
     private GameObject[] pickableObjects;
