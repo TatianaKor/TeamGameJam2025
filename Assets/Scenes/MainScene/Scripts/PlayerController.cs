@@ -114,7 +114,6 @@ public class PlayerController : MonoBehaviour
 		// TODO: WTF?! redo?
 		if (_lastVelocityY - rb.linearVelocityY <= DEATH_VELOCITY_Y)
         {
-	        Debug.Log(_lastVelocityY - rb.linearVelocityY);
 			//TODO: death animation
 			GameManager.Instance.RestartLevel();
 		}
