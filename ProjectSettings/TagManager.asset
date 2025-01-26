@@ -8,6 +8,7 @@ TagManager:
   - DetachOne
   - Sticky
   - Pickable
+  - WinPanel
   layers:
   - Default
   - TransparentFX

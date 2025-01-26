@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     
     private PlayerController player;
     private GameObject[] pickableObjects;
+    private WinPanelController winPanel;
 
     private void Awake()
     {
@@ -37,6 +38,11 @@ public class GameManager : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerController>();
         pickableObjects = GameObject.FindGameObjectsWithTag("Pickable");
+        var winPanels = Resources.FindObjectsOfTypeAll<WinPanelController>();
+        if(winPanels.Length > 0)
+        {
+            winPanel = winPanels[0];
+        }
     }
 
     public void RestartLevel()
@@ -74,5 +80,10 @@ public class GameManager : MonoBehaviour
     public float GetMusicVolume()
     {
         return MusicVolume;
+    }
+
+    public void WinGame()
+    {
+        winPanel.gameObject.SetActive(true);
     }
 }
