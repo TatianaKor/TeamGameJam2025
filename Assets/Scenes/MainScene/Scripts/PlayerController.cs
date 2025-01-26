@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
 	[Header("Throw Gum")] [SerializeField] private float throwGumPower = 1.5f;
 	[SerializeField] private Transform spawnedObjectsRoot;
 	[SerializeField] private Rigidbody2D gumPrefab;
-	[SerializeField] private Rigidbody2D bubblePrefab;
+	[SerializeField] private BubbleGum bubblePrefab;
 	[SerializeField] private Transform gumCannon;
 	[SerializeField] private Transform gumSpawnPoint;
 	[SerializeField] private Transform bubbleSpawnPoint;
@@ -229,7 +229,13 @@ public class PlayerController : MonoBehaviour
 
 		--playerState.gumCount;
 
-		Instantiate(bubblePrefab, bubbleSpawnPoint.position, Quaternion.identity, spawnedObjectsRoot);
+		var bubble = Instantiate(bubblePrefab, bubbleSpawnPoint.position, Quaternion.identity, spawnedObjectsRoot);
+		bubble.player = this;
+	}
+	
+	public void DetachBubble(BubbleGum bubbleGum)
+	{
+		// bubbleGum.transform.SetParent(spawnedObjectsRoot, true);
 	}
 
 	private void UpdateLook()
