@@ -1087,7 +1087,7 @@ MonoBehaviour:
   throwGumPower: 10
   spawnedObjectsRoot: {fileID: 597697777}
   gumPrefab: {fileID: 3195115407279262610, guid: 205ab4a405d6df94ba07a1ccfc108fa1, type: 3}
-  bubblePrefab: {fileID: 5881375989207311541, guid: 314a71b21300a1c4eba9ad937b22f6c7, type: 3}
+  bubblePrefab: {fileID: -5237703118334795125, guid: bacb1e135f08d0e4382bbbb5990daee7, type: 3}
   gumCannon: {fileID: 2101003886}
   gumSpawnPoint: {fileID: 1211073081}
   bubbleSpawnPoint: {fileID: 1793763241}
@@ -7137,8 +7137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f98e43486c5594458db0826d39ff519, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayMusic: 1
-  MusicVolume: 1
 --- !u!4 &622005829
 Transform:
   m_ObjectHideFlags: 0
@@ -8661,7 +8659,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Tap to continue...
+  m_text: Click to continue...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -11944,7 +11942,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 226472510}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1339592113}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!222 &918506944
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -25697,7 +25707,7 @@ Transform:
   m_GameObject: {fileID: 1793763240}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.323, y: 0, z: 0}
+  m_LocalPosition: {x: 1.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
