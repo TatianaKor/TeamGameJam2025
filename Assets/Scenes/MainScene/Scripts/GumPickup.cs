@@ -12,7 +12,7 @@ public class GumPickup : MonoBehaviour
 		{
 			return;
 		}
-		other.gameObject.GetComponent<PlayerController>().playerState.gumCount += gumCount;
+		other.gameObject.GetComponent<PlayerController>().AddGum(gumCount);
 		gameObject.SetActive(false);
 	}
 }

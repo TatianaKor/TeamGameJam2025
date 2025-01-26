@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -18,12 +19,14 @@ public class PausePanelController : MonoBehaviour
     private void OnEnable()
     {
         Time.timeScale = 0;
+        InputSystem.actions.FindActionMap("Player").Disable();
     }
 
     private void ContinueGame()
     {
         gameObject.SetActive(false);
         Time.timeScale = 1;
+        InputSystem.actions.FindActionMap("Player").Enable();
     }
 
     private void RestartGame()
@@ -34,6 +37,7 @@ public class PausePanelController : MonoBehaviour
 
     private void ReturnToMainMenu()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(0); //Main menu
     }
 }

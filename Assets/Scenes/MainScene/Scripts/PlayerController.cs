@@ -1,9 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -43,6 +46,8 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private Camera cam;
 
 	[Header("State")]
+	[SerializeField] private TextMeshProUGUI gumCountText;
+	[SerializeField] private Button deathScreen;
 	public PlayerState playerState;
 	
 	[Header("Misc")]
@@ -73,6 +78,8 @@ public class PlayerController : MonoBehaviour
 
 	void Awake()
 	{
+		gumCountText.text = playerState.gumCount.ToString();
+
 		_spawnPosition = transform.position;
 		_startGumCount = playerState.gumCount;
 
@@ -92,9 +99,14 @@ public class PlayerController : MonoBehaviour
 		_look = _inputActionMap.FindAction("Look");
 	}
 
-	#region input_activation
+    private void Start()
+    {
+		deathScreen.onClick.AddListener(GameManager.Instance.RestartLevel);
+	}
 
-	private void OnEnable()
+    #region input_activation
+
+    private void OnEnable()
 	{
 		_inputActionMap.Enable();
 	}
@@ -117,20 +129,16 @@ public class PlayerController : MonoBehaviour
 
 		// TODO: WTF?! redo?
 		if (_lastVelocityY - rb.linearVelocityY <= DEATH_VELOCITY_Y)
-        {
-	        Debug.Log(_lastVelocityY - rb.linearVelocityY);
+		{
+			Debug.Log(_lastVelocityY - rb.linearVelocityY);
 			anim.SetBool(DieAnimHash, true);
-            StartCoroutine(RestratLevelCoroutine());
-        }
+			_inputActionMap.Disable();
+			deathScreen.gameObject.SetActive(true);
+		}
+
 		_lastVelocityY = rb.linearVelocityY;
 		anim.SetBool(IsGoingUpAnimHash, rb.linearVelocityY > 0);
 	}
-
-    private IEnumerator RestratLevelCoroutine()
-    {
-        yield return new WaitForSeconds(deathDelay);
-        GameManager.Instance.RestartLevel();
-    }
 
     private void UpdateTimeSinceJump()
 	{
@@ -148,7 +156,10 @@ public class PlayerController : MonoBehaviour
 			Destroy(child.gameObject);
         }
         anim.SetBool(DieAnimHash, false);
-    }
+
+		gumCountText.text = playerState.gumCount.ToString();
+		_inputActionMap.Enable();
+	}
 
 	#region movement
 
@@ -222,12 +233,18 @@ public class PlayerController : MonoBehaviour
 
 	private void ThrowGum(InputAction.CallbackContext context)
 	{
+		if(IsPointerOverUIObject())
+        {
+			return;
+        }
+
 		if (playerState.gumCount <= 0)
 		{
 			return;
 		}
 
 		--playerState.gumCount;
+		gumCountText.text = playerState.gumCount.ToString();
 
 		var spit = Instantiate(gumPrefab, gumSpawnPoint.position, Quaternion.identity, spawnedObjectsRoot);
 		spit.AddForce(gumCannon.right * throwGumPower, ForceMode2D.Impulse);
@@ -241,6 +258,7 @@ public class PlayerController : MonoBehaviour
 		}
 
 		--playerState.gumCount;
+		gumCountText.text = playerState.gumCount.ToString();
 
 		var bubble = Instantiate(bubblePrefab, bubbleSpawnPoint.position, Quaternion.identity, spawnedObjectsRoot);
 		bubble.player = this;
@@ -300,5 +318,20 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-    #endregion
+	#endregion
+
+	private bool IsPointerOverUIObject()
+	{
+		PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+		eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+		List<RaycastResult> results = new List<RaycastResult>();
+		EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+		return results.Count > 0;
+	}
+
+	public void AddGum(int addCount)
+    {
+		playerState.gumCount += addCount;
+		gumCountText.text = playerState.gumCount.ToString();
+	}
 }
