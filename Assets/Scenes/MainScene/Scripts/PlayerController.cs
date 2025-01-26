@@ -261,7 +261,6 @@ public class PlayerController : MonoBehaviour
 		gumCountText.text = playerState.gumCount.ToString();
 
 		var bubble = Instantiate(bubblePrefab, bubbleSpawnPoint.position, Quaternion.identity, spawnedObjectsRoot);
-		bubble.player = this;
 	}
 	
 	public void DetachBubble(BubbleGum bubbleGum)

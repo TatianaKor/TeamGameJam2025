@@ -17,16 +17,16 @@ public class MainMenuController : MonoBehaviour
         startButton.onClick.AddListener(StartGame);
         exitButton.onClick.AddListener(ExitGame);
 
-        playMusicToggle.isOn = GameManager.Instance.PlayMusic;
-        musicVolumeSlider.value = GameManager.Instance.MusicVolume;
+        playMusicToggle.isOn = GameManager.Instance.GetPlayMusic();
+        musicVolumeSlider.value = GameManager.Instance.GetMusicVolume();
 
         playMusicToggle.onValueChanged.AddListener((value) =>
         {
-            GameManager.Instance.PlayMusic = value;
+            GameManager.Instance.SetPlayMusic(value);
         });
         musicVolumeSlider.onValueChanged.AddListener((value) =>
         {
-            GameManager.Instance.MusicVolume = value;
+            GameManager.Instance.SetMusicVolume(value);
         });
     }
 

@@ -5,9 +5,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    [HideInInspector] public bool PlayMusic = true;
-    [HideInInspector] public float MusicVolume = 1f;
+    [HideInInspector] private bool PlayMusic = true;
+    [HideInInspector] private float MusicVolume = 1f;
 
+    private AudioSource audioSource;
     private PlayerController player;
     private GameObject[] pickableObjects;
 
@@ -23,6 +24,8 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         SceneManager.sceneLoaded += FindObjects;
+
+        audioSource = GetComponentInChildren<AudioSource>();
     }
 
     private void FindObjects(Scene scene, LoadSceneMode mode)
@@ -43,5 +46,27 @@ public class GameManager : MonoBehaviour
         {
             pickableObject.SetActive(true);
         }
+    }
+
+    public void SetPlayMusic(bool value)
+    {
+        PlayMusic = value;
+        audioSource.mute = !value;
+    }
+
+    public void SetMusicVolume(float value)
+    {
+        MusicVolume = value;
+        audioSource.volume = value;
+    }
+
+    public bool GetPlayMusic()
+    {
+        return PlayMusic;
+    }
+
+    public float GetMusicVolume()
+    {
+        return MusicVolume;
     }
 }
