@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,8 +8,14 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] private bool PlayMusic = true;
     [HideInInspector] private float MusicVolume = 1f;
+    [SerializeField] private AudioSource rapAudioSource;
 
-    private AudioSource audioSource;
+    public AudioSource stepSounds;
+    public AudioSource deathSound;
+    public AudioSource landingSound;
+    public AudioSource pickupSound;
+    public AudioSource spitSound;
+    
     private PlayerController player;
     private GameObject[] pickableObjects;
 
@@ -24,8 +31,6 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         SceneManager.sceneLoaded += FindObjects;
-
-        audioSource = GetComponentInChildren<AudioSource>();
     }
 
     private void FindObjects(Scene scene, LoadSceneMode mode)
@@ -51,13 +56,14 @@ public class GameManager : MonoBehaviour
     public void SetPlayMusic(bool value)
     {
         PlayMusic = value;
-        audioSource.mute = !value;
+        rapAudioSource.mute = !value;
     }
 
     public void SetMusicVolume(float value)
     {
         MusicVolume = value;
-        audioSource.volume = value;
+        rapAudioSource.volume = value;
+        stepSounds.volume = value;
     }
 
     public bool GetPlayMusic()

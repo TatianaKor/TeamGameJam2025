@@ -57,7 +57,6 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private Animator anim;
 	[SerializeField] private Transform spriteRoot;
 	[SerializeField] private float spriteScaleMultiplier = 0.35f;
-	[SerializeField] private float deathDelay = 1f;
 
 	public bool IsTouchingGround { get; private set; }
 
@@ -130,10 +129,10 @@ public class PlayerController : MonoBehaviour
 		// TODO: WTF?! redo?
 		if (_lastVelocityY - rb.linearVelocityY <= DEATH_VELOCITY_Y)
 		{
-			Debug.Log(_lastVelocityY - rb.linearVelocityY);
 			anim.SetBool(DieAnimHash, true);
 			_inputActionMap.Disable();
 			deathScreen.gameObject.SetActive(true);
+			GameManager.Instance.deathSound.Play();
 		}
 
 		_lastVelocityY = rb.linearVelocityY;
@@ -175,6 +174,14 @@ public class PlayerController : MonoBehaviour
 		rb.linearVelocityX = input * movementAcceleration;
 		
 		anim.SetBool(IsMovingHorizontallyAnimHash, input != 0);
+		if (input != 0 && !GameManager.Instance.stepSounds.isPlaying)
+		{
+			GameManager.Instance.stepSounds.Play();
+		}
+		else
+		{
+			GameManager.Instance.stepSounds.Stop();
+		}
 
 		switch (input)
 		{
@@ -223,7 +230,13 @@ public class PlayerController : MonoBehaviour
 		// Debug.DrawRay(transform.position, Vector2.down * (JUMP_ALLOWANCE_VERTICAL_DISTANCE + touchingDownCheckCircleRadius), Color.red, 10);
 		// Debug.DrawRay(transform.position + Vector3.right * touchingDownCheckCircleRadius, Vector2.down * JUMP_ALLOWANCE_VERTICAL_DISTANCE, Color.red, 10);
 		// Debug.DrawRay(transform.position - Vector3.right * touchingDownCheckCircleRadius, Vector2.down * JUMP_ALLOWANCE_VERTICAL_DISTANCE, Color.red, 10);
+		
+		bool prev = IsTouchingGround;
 		IsTouchingGround = hit.collider != null;
+		if (!prev && IsTouchingGround)
+		{
+			GameManager.Instance.landingSound.Play();
+		}
 		anim.SetBool(IsOnGroundAnimHash, IsTouchingGround);
 	}
 
@@ -248,6 +261,7 @@ public class PlayerController : MonoBehaviour
 
 		var spit = Instantiate(gumPrefab, gumSpawnPoint.position, Quaternion.identity, spawnedObjectsRoot);
 		spit.AddForce(gumCannon.right * throwGumPower, ForceMode2D.Impulse);
+		GameManager.Instance.spitSound.Play();
 	}
 
 	private void ThrowBubble(InputAction.CallbackContext context)
@@ -261,11 +275,6 @@ public class PlayerController : MonoBehaviour
 		gumCountText.text = playerState.gumCount.ToString();
 
 		var bubble = Instantiate(bubblePrefab, bubbleSpawnPoint.position, Quaternion.identity, spawnedObjectsRoot);
-	}
-	
-	public void DetachBubble(BubbleGum bubbleGum)
-	{
-		// bubbleGum.transform.SetParent(spawnedObjectsRoot, true);
 	}
 
 	private void UpdateLook()
@@ -332,5 +341,6 @@ public class PlayerController : MonoBehaviour
     {
 		playerState.gumCount += addCount;
 		gumCountText.text = playerState.gumCount.ToString();
+		GameManager.Instance.pickupSound.Play();
 	}
 }
