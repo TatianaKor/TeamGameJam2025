@@ -1117,7 +1117,6 @@ MonoBehaviour:
   anim: {fileID: 1097832307}
   spriteRoot: {fileID: 1097832302}
   spriteScaleMultiplier: 0.35
-  deathDelay: 1
 --- !u!1001 &45716330
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6504,6 +6503,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f98e43486c5594458db0826d39ff519, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rapAudioSource: {fileID: 0}
+  stepSounds: {fileID: 0}
+  deathSound: {fileID: 0}
+  landingSound: {fileID: 0}
+  pickupSound: {fileID: 0}
 --- !u!4 &622005829
 Transform:
   m_ObjectHideFlags: 0
