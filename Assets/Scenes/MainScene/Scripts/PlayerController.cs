@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,10 +16,15 @@ public class PlayerController : MonoBehaviour
 	private static readonly int FacingRightAnimHash = Animator.StringToHash("FacingRight");
 	private static readonly int TimeSinceJumpAnimHash = Animator.StringToHash("TimeSinceJump");
 	private static readonly int IsOnGroundAnimHash = Animator.StringToHash("IsOnGround");
+    private static readonly int DieAnimHash = Animator.StringToHash("Die");
+    private static readonly int IsGoingUpAnimHash = Animator.StringToHash("IsGoingUp");
 
 	#endregion
 	
 	[Header("Jump")] [SerializeField] private float JUMP_ALLOWANCE_VERTICAL_DISTANCE = 1.7f;
+    #endregion
+
+    [Header("Jump")] [SerializeField] private float JUMP_ALLOWANCE_VERTICAL_DISTANCE = 1.7f;
 	[SerializeField] private float DEATH_VELOCITY_Y = -10f;
 	[SerializeField] private float JUMP_ALLOWANCE_VERTICAL_VELOCITY = 0.1f;
 	[SerializeField] private float WALL_JUMP_ALLOWANCE_VERTICAL_VELOCITY = 1f;
@@ -49,6 +55,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private Animator anim;
 	[SerializeField] private Transform spriteRoot;
 	[SerializeField] private float spriteScaleMultiplier = 0.35f;
+	[SerializeField] private float deathDelay = 1f;
 
 	public bool IsTouchingGround { get; private set; }
 
@@ -114,13 +121,21 @@ public class PlayerController : MonoBehaviour
 		// TODO: WTF?! redo?
 		if (_lastVelocityY - rb.linearVelocityY <= DEATH_VELOCITY_Y)
         {
-			//TODO: death animation
-			GameManager.Instance.RestartLevel();
-		}
+	        Debug.Log(_lastVelocityY - rb.linearVelocityY);
+			anim.SetBool(DieAnimHash, true);
+            StartCoroutine(RestratLevelCoroutine());
+        }
 		_lastVelocityY = rb.linearVelocityY;
+		anim.SetBool(IsGoingUpAnimHash, rb.linearVelocityY > 0);
 	}
 
-	private void UpdateTimeSinceJump()
+    private IEnumerator RestratLevelCoroutine()
+    {
+        yield return new WaitForSeconds(deathDelay);
+        GameManager.Instance.RestartLevel();
+    }
+
+    private void UpdateTimeSinceJump()
 	{
 		_timeSinceJump += Time.deltaTime;
 		anim.SetFloat(TimeSinceJumpAnimHash, _timeSinceJump);
@@ -135,7 +150,8 @@ public class PlayerController : MonoBehaviour
         {
 			Destroy(child.gameObject);
         }
-	}
+        anim.SetBool(DieAnimHash, false);
+    }
 
 	#region movement
 
